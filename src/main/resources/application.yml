@@ -10,4 +10,4 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/memo
     username: root
-    password: "!a018219"
+    password: "!Aa018219"
