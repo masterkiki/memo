@@ -33,15 +33,54 @@
 		<c:import url="/WEB-INF/jsp/include/footer.jsp"/>
 	</div>
 
-	
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		$(document).ready(function (){
 			$("#joinBtn").on("click",function(){
-				let id = $("idInput").val();
-				let password = $("passwordInput").val();
-				let passwordConfirm = $("passwordConfirmInput").val();
-				let name = $("nameInput").val();
-				let email = $("emailInput").val();
+				let id = $("#idInput").val();
+				let password = $("#passwordInput").val();
+				let passwordConfirm = $("#passwordConfirmInput").val();
+				let name = $("#nameInput").val();
+				let email = $("#emailInput").val();
+				
+				if(id == ""){
+					alert("아이디를 입력하세요");
+					return;
+				}
+				if(password== ""){
+					alert("패스워드를 입력하세요");
+					return;
+				}
+				if(password != passwordConfirm){
+					alert("패스워드가 일치하지 않습니다.");
+					return;
+				}
+				if(name == ""){
+					alert("이름을 입력하세요");
+					return;
+				}
+				if(email == ""){
+					alert("이메일을 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"post"
+					, url : "/user/signup"
+					, data : {"loginId":id, "password":password, "name":name, "email": email}
+					, success:function(data){
+						if(data.result == "success"){
+							location.gref ="/user/signin/view"
+						}	else{
+							alert("회원가입 실패");
+						}
+					}
+					, error:function(){
+						alert("회원가입 에러");
+					}
+					
+					
+				});
 				
 				
 			});
