@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pks.memo.bo.UserBO;
+import com.pks.memo.user.bo.UserBO;
 
 @RestController  // @RestController = @Controller + @ResponseBody
 public class UserRestController {
@@ -23,8 +23,8 @@ public class UserRestController {
 			@RequestParam("loginId") String loginId
 			,@RequestParam("password") String password
 			,@RequestParam("name") String name
-			,@RequestParam("email") String email
-			){
+			,@RequestParam("email") String email ){
+		
 		int count = userBO.addUser(loginId, password, name, email);
 		
 		Map<String, String> result = new HashMap<>();
