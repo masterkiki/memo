@@ -20,6 +20,9 @@ header{
 	width:350px;
 }
 
+.input-box{
+	width:650px;
+}
 footer{
 	height:50px;
 	background-color:#dddddd;

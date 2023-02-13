@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>로그인</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
@@ -21,27 +21,21 @@
 		<c:import url="/WEB-INF/jsp/include/header.jsp"/>
 		<section class="contents d-flex justify-content-center">
 			<div class="join-box my-5">
-				<h2 class="text-center">회원가입</h2>
 				<input type="text" placeholder="아이디" id="idInput" class="form-control mt-2">
 				<input type="password" placeholder="비밀번호" id="passwordInput" class="form-control mt-2">
-				<input type="password" placeholder="비밀번호 확인"  id="passwordConfirmInput" class="form-control mt-2">
-				<input type="text" placeholder="이름" id="nameInput" class="form-control mt-2">
-				<input type="text" placeholder="이메일" id="emailInput" class="form-control mt-2">
-				<button type="button" class="btn btn-primary btn-block mt-2" id="joinBtn">가입</button>
+
+				<button type="button" class="btn btn-primary btn-block mt-2" id="loginBtn">로그인</button>
+				<div class="text-center mt-4"><a href="/user/signup/view">회원가입</a></div>
 			</div>
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp"/>
 	</div>
 
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		$(document).ready(function (){
-			$("#joinBtn").on("click",function(){
+			$("#loginBtn").on("click", function(){
 				let id = $("#idInput").val();
 				let password = $("#passwordInput").val();
-				let passwordConfirm = $("#passwordConfirmInput").val();
-				let name = $("#nameInput").val();
-				let email = $("#emailInput").val();
 				
 				if(id == ""){
 					alert("아이디를 입력하세요");
@@ -51,39 +45,27 @@
 					alert("패스워드를 입력하세요");
 					return;
 				}
-				if(password != passwordConfirm){
-					alert("패스워드가 일치하지 않습니다.");
-					return;
-				}
-				if(name == ""){
-					alert("이름을 입력하세요");
-					return;
-				}
-				if(email == ""){
-					alert("이메일을 입력하세요");
-					return;
-				}
 				
 				$.ajax({
 					type:"post"
-					, url : "/user/signup"
-					, data : {"loginId":id, "password":password, "name":name, "email": email}
+					, url:"/user/signin"
+					, data:{"loginId":id, "password":password}
 					, success:function(data){
 						if(data.result == "success"){
-							location.href ="/user/signin/view"
-						}	else{
-							alert("회원가입 실패");
+							location.href ="/post/list/view";
+						} else {
+							alert("아이디 또는 비밀번호를 확인해 주세요");
 						}
+						
 					}
 					, error:function(){
-						alert("회원가입 에러");
+						alert("로그인 에러");
 					}
-					
-					
 				});
 				
 				
 			});
+			
 		});
 	</script>	
 	
