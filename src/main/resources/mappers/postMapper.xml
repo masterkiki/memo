@@ -12,6 +12,7 @@
 			`userId`
 			, `title`
 			, `content`	
+			, `imagePath`
 			, `createdAt`
 			, `updatedAt`
 		)
@@ -20,13 +21,64 @@
 			#{userId}
 			, #{title}
 			, #{content}
+			, #{imagePath}
 			, now()
 			, now()
 		)
-		
-		
-		
-	
 	</insert>
+	
+	<select id="selectPostList" resultType="com.pks.memo.post.model.Post">
+		SELECT
+			`id`
+			, `userId`
+			, `title`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`userId` = #{userId}
+		ORDER BY
+			`id` DESC;
+			
+	
+	</select>
+	
+	<select id="selectPost" resultType="com.pks.memo.post.model.Post">
+		SELECT
+			`id`
+			, `userId`
+			, `title`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+	</select>
+
+	<update id="updatePost" parameterType="map">
+		UPDATE
+			`post`
+		SET
+			`title` = #{title}
+			, `content` = #{content}
+			, `updatedAt`  = now()
+		WHERE
+			`id` = #{postId}
+	</update>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+		
+		
+	</delete>
 
 </mapper>

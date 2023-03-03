@@ -20,20 +20,23 @@
 		<c:import url="/WEB-INF/jsp/include/header.jsp" />
 		<section class="d-flex justify-content-center">
 			<div class="input-box my-5">
-				<h1 class="text-center">메모 입력</h1>
+				<h1 class="text-center">메모 보기</h1>
 				<div class="d-flex mt-4">
 					<label class="col-2">제목 : </label>
-					<input type="text" class="form-control col-10" id="titleInput">
+					<input type="text" class="form-control col-10" id="titleInput" value="${post.title }">
 				</div>
 				<div class="mt-3">
-					<textarea rows="10" class="form-control" id="contentInput"></textarea>
+					<textarea rows="10" class="form-control" id="contentInput">${post.content }</textarea>
 				</div>
-				<div class="mt-2">
-					<input type="file" id="fileInput">
-				</div>
+				
+				<img src="${post.imagePath }">
+				
 				<div class="d-flex justify-content-between mt-3">
+				<div>
 					<a href="/post/list/view" class="btn btn-info">목록으로</a>
-					<button type="button" class="btn btn-primary" id="saveBtn">저장</button>
+					<button type="button" class="btn btn-danger" id="deleteBtn" data-post-id="${post.id }">삭제</button>
+				</div>
+					<button type="button" class="btn btn-primary" id="modifyBtn" data-post-id="${post.id }">수정</button>
 				</div>
 			</div>
 		</section>
@@ -44,44 +47,59 @@
 
 	<script>
 		$(document).ready(function(){
-			$("#saveBtn").on("click",function(){
+			
+			
+			$("#deleteBtn").on("click", function(){
+				
+				let postId = $(this).data("post-id");
+				
+				
+				$.ajax({
+					type:"get"
+					, url:"/post/delete"
+					, data:{"postId":postId}
+					, success:function(data){
+						if(data.result == "success"){
+							location.href = "/post/list/view";
+						} else{
+							alert("삭제 실패");
+						}
+					}
+					, error:function(){
+						alert("삭제 에러");
+					}
+				});
+				
+			});
+			
+			$("#modifyBtn").on("click", function(){
 				let title = $("#titleInput").val();
 				let content = $("#contentInput").val();
+				
+				let postid = $(this).data("post-id");
 				
 				if(title == ""){
 					alert("제목을 입력하세요");
 					return;
-				}
-				
+				} 
 				if(content == ""){
 					alert("내용을 입력하세요");
 					return;
 				}
 				
-				console.log(title);
-				console.log(content);
-				
-				var formData = new FormData();
-				formData.append("title", title);
-				formData.append("content", content);
-				formData.append("file", $("#fileInput")[0].files[0])
-				
 				$.ajax({
 					type:"post"
-					, url:"/post/create"
-					, data:formData
-					, enctype:"multipart/form-data" // 파일 업로드 필수항목
-					, processData:false // 파일 업로드 필수항목
-					, contentType:false // 파일 업로드 필수항목
+					, url:"/post/update"
+					, data:{"postId":postid, "title":title, "content":content}
 					, success:function(data){
 						if(data.result == "success"){
-							location.href = "/post/list/view";
-						} else {
-							alert("메모 저장 실패")
+							location.reload();
+						} else{
+							alert("수정 실패");
 						}
 					}
 					, error:function(){
-						alert("메모 저장 에러");
+						alert("수정 에러");
 					}
 				});
 				
